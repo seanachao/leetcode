@@ -25,7 +25,7 @@ Node* revese_list(Node* ptr){
  
 Node* make_list(Node* list){
     Node* ptr = list;
-    for(int i=0;i<10;i++){
+    for(int i=1;i<=10;i++){
         Node* b = (Node*)malloc(sizeof(Node));
         b->val = i;
         b->next = NULL;
@@ -90,6 +90,65 @@ Node* reverse_list(Node* list){
     return ptr;
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Node* reverse_list2(Node* list){
+    //printf("%d\n",list->val);
+    Node* ptr =  list;
+    if(!list->next){
+        return list;
+    }
+    
+    Node* record_ptr = ptr->next;
+    Node* swap_ptr = record_ptr;
+    while(record_ptr){
+        record_ptr = record_ptr->next;
+        swap_ptr -> next = ptr;
+        ptr = swap_ptr;
+        swap_ptr = record_ptr;
+    }
+    list->next = NULL;
+    return ptr;
+}
 int func(void){
     static int counter = 1;
     return ++counter;
@@ -102,8 +161,9 @@ int main(){
     //print_list(t);
     //Node* re_list = reverse_list(t);
     //print_list(re_list);
-    Node* n = recur_list(t);
-    t->next = NULL;
+    //Node* n = recur_list(t);
+    //t->next = NULL;
+    Node* n = reverse_list2(t);
     print_list(n);
 
 }
