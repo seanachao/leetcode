@@ -63,16 +63,21 @@ Node* reverseKGroup(Node* head, int k){
     Node* record = head->next;
     Node* swap_ptr = head->next;
     Node* end = NULL;
+    Node* start_ptr = head;
     //Node* mid_ptr = ptr;
     int step = 1;
     int flag = 0;
-    
+    //反转前k个
+    //统计后面是否有k个，如果有，则继续反转，但需要更新一些值
+    //record始终记录下一个节点的值
+    //start 始终记录起点的值
+    //end记录终点的值
     while(record){
         //cur_ptr = record;
         while(record &&(step) < k){
             record = record->next;
-            swap_ptr ->next = cur_ptr;
-            cur_ptr = cur_ptr->next;
+            swap_ptr -> next = cur_ptr;
+            cur_ptr = swap_ptr;
             swap_ptr = record;
             step++;
         }
@@ -89,18 +94,21 @@ Node* reverseKGroup(Node* head, int k){
         }
         step = 1;
         if(!end  && step < k){
-            cur_ptr->next = record;
+            start_ptr->next = record;
             break;
         }
-        cur_ptr->next = end;
+        start_ptr->next = end;
+        start_ptr = record;
         cur_ptr = record; 
+        record = record->next;
+        swap_ptr = record;
     }
-    return ptr->next;
-    //
-
-    
+    return ptr->next;    
 }
 
+Node* reverseKGroup_recur(Node* head, int k){
+//反转k 个链表返回头和尾
+}
 /*
 一定要记录下一个指针
 当前指针
@@ -147,47 +155,6 @@ Node* reverse_list(Node* list){
     return ptr;
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 Node* reverse_list2(Node* list){
     //printf("%d\n",list->val);
     Node* ptr =  list;
@@ -221,7 +188,7 @@ int main(){
     //Node* n = recur_list(t);
     //t->next = NULL;
     //Node* n = reverse_list2(t);
-    Node* n = reverseKGroup(t->next,3);
+    Node* n = reverseKGroup(t->next,9);
     print_list(n);
 
 }
