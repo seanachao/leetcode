@@ -23,16 +23,16 @@ Node* revese_list(Node* ptr){
     return record;
 }
  
-Node* make_list(Node* list){
+void make_list(Node* list,int* list_put,int num){
     Node* ptr = list;
-    for(int i=1;i<=10;i++){
+    for(int i=0; i<num; i++){
         Node* b = (Node*)malloc(sizeof(Node));
-        b->val = i;
+        b->val = list_put[i];
         b->next = NULL;
         ptr->next = b;
         ptr = b;
     }
-    return list;
+    //return list;
 }
 void print_list(Node* list){
     Node* ptr = list;
@@ -54,7 +54,7 @@ record 每次变化k-- k=1 的时候反转结束
 start 指向 
 */
 
-#define ListNode struct Node
+#define ListNode Node
 Node* reverseKGroup(Node* head, int k){
     //确定头节点
     Node* ptr = (Node*)malloc(sizeof(Node));
@@ -156,6 +156,7 @@ Node* reverse_list(Node* list){
 
 }
 Node* reverse_list2(Node* list){
+
     //printf("%d\n",list->val);
     Node* ptr =  list;
     if(!list->next){
@@ -177,18 +178,64 @@ int func(void){
     static int counter = 1;
     return ++counter;
 }
-int main(){
+void mergetwo(ListNode* head ,ListNode* list1,ListNode* list2){
+    ListNode* up_ptr = list1;
+    ListNode* down_ptr = list2;
 
-    struct node* t = (struct node*)malloc(sizeof(struct node));
-    t->next = NULL;
-    t = make_list(t);
-    //print_list(t);
+    if (list1 == NULL || list2 == NULL){
+        return;
+    }
+    if(up_ptr -> val >= down_ptr ->val){
+        head -> next = down_ptr;
+        down_ptr = down_ptr -> next;
+        list2->next = up_ptr;
+    }else{
+        //下面的别上面的大
+        up_ptr = up_ptr -> next;
+    }
+    head = head -> next;
+    mergetwo(head,up_ptr,down_ptr);
+
+}
+ListNode* mergeTwoLists(ListNode* list1, ListNode* list2){
+    //printf("%d\n",list1->val);
+    //return list1;
+    ListNode* head = (ListNode*)malloc(sizeof *head);
+    ListNode* cur_head = head;
+    ListNode* up_ptr = list1;
+    ListNode* down_ptr = list2;
+    if (list1 && list2 && list1->val > list2->val){
+        cur_head -> next = list2;
+    }else{
+        cur_head -> next = list1;
+    }
+    cur_head = cur_head -> next;
+    mergetwo(cur_head,list1,list2);
+
+
+    if (list1 == NULL || list2 == NULL){
+        if (list1) print_list(list1); else print_list(list2);
+        return NULL;
+    }
+}
+int main(){
+    struct node* t1 = (struct node*)malloc(sizeof(struct node));
+    t1->next = NULL;
+    struct node* t2 = (struct node*)malloc(sizeof(struct node));
+    t2->next = NULL;
+    int l1[] = {1,2,4};
+    int l2[] = {1,3,4};
+    make_list(t1,l1,sizeof(l1)/4);
+    make_list(t2,l2,sizeof(l1)/4);
+    //print_list(t1 -> next);
+    //print_list(t2 -> next);
+    mergeTwoLists(t1->next,t2->next);
     //Node* re_list = reverse_list(t);
     //print_list(re_list);
     //Node* n = recur_list(t);
     //t->next = NULL;
     //Node* n = reverse_list2(t);
-    Node* n = reverseKGroup(t->next,9);
-    print_list(n);
+    //Node* n = reverseKGroup(t->next,9);
+    //print_list(n);
 
 }
