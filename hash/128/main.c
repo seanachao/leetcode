@@ -51,9 +51,12 @@ int longestConsecutive(int* inputs, int numsSize){
             int right = s_r == NULL ? 0 : s_r -> length;
             int cur_length = 1 + left + right;
             if (cur_length > max_length) max_length = cur_length;
-            add_num(inputs[i],cur_length);
-            add_num(inputs[i] - left,cur_length);
-            add_num(inputs[i] + right, cur_length);
+
+            s->length = cur_length;
+            s_l = find_num(inputs[i]-left);
+            if(s_l) s_l -> length = cur_length; else add_num(inputs[i] - left ,cur_length);
+            s_r = find_num(inputs[i]-left);
+            if(s_r) s_r -> length = cur_length; else add_num(inputs[i] - right, cur_length);
 
         }
     }
