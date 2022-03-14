@@ -131,7 +131,7 @@ LRUCache* lRUCacheCreate(int capacity){
         ptr->key = -1;
         ptr->val = -1;
     }
-    ptr->next = NULL;
+    ptr->next = NULL;h
     return cache;
 }
 void lRUCacheFree(LRUCache* obj) {
