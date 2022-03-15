@@ -54,7 +54,7 @@ record 每次变化k-- k=1 的时候反转结束
 start 指向 
 */
 
-#define ListNode Node
+#define ListNode node
 Node* reverseKGroup(Node* head, int k){
     //确定头节点
     Node* ptr = (Node*)malloc(sizeof(Node));
@@ -178,10 +178,9 @@ int func(void){
     static int counter = 1;
     return ++counter;
 }
-void mergetwo(ListNode* head ,ListNode* list1,ListNode* list2){
-    ListNode* up_ptr = list1;
-    ListNode* down_ptr = list2;
-
+void mergetwo(struct ListNode* head ,struct ListNode* list1,struct ListNode* list2){
+    struct ListNode* up_ptr = list1;
+    struct ListNode* down_ptr = list2;
     if (list1 == NULL || list2 == NULL){
         return;
     }
@@ -189,34 +188,70 @@ void mergetwo(ListNode* head ,ListNode* list1,ListNode* list2){
         head -> next = down_ptr;
         down_ptr = down_ptr -> next;
         list2->next = up_ptr;
+        head = head -> next;
     }else{
-        //下面的别上面的大
+        //下面的比上面的大
         up_ptr = up_ptr -> next;
     }
-    head = head -> next;
     mergetwo(head,up_ptr,down_ptr);
 
 }
-ListNode* mergeTwoLists(ListNode* list1, ListNode* list2){
+void merge_tw0(struct ListNode* head,struct ListNode* list1,struct ListNode* list2){
+    if(list1 == NULL){
+        head -> next = list2;
+        return;
+    }
+    if(list2 == NULL){
+        head -> next = list1;
+        return;
+    }
+    if(list1->val >= list2 ->val ){
+        head -> next = list2;
+        merge_tw0(head->next,list1,list2->next);
+    }else{
+        head -> next = list1;
+        merge_tw0(head->next,list1->next,list2);
+    }
+}
+void merge_two(struct ListNode* head,struct ListNode* list1,struct ListNode* list2){
+    if(list1 == NULL){
+        head -> next = list2;
+        return;
+    }
+    if(list2 == NULL){
+        head -> next = list1;
+        return;
+    }
+    struct ListNode* up_ptr = list1;
+    struct ListNode* down_ptr = list2;
+    if(list1->val >= list2->val){
+        head -> next = list2;
+        head = head ->next;
+        down_ptr = list2 -> next;
+        list2 -> next = NULL;
+    }else{
+        head->next = list1;
+        head = head->next;
+        up_ptr = list1 -> next;
+        list1 -> next = NULL;
+    }
+    merge_two(head,up_ptr,down_ptr);
+
+}
+struct ListNode* mergeTwoLists(struct ListNode* list1, struct ListNode* list2){
     //printf("%d\n",list1->val);
     //return list1;
-    ListNode* head = (ListNode*)malloc(sizeof *head);
-    ListNode* cur_head = head;
-    ListNode* up_ptr = list1;
-    ListNode* down_ptr = list2;
-    if (list1 && list2 && list1->val > list2->val){
-        cur_head -> next = list2;
-    }else{
-        cur_head -> next = list1;
-    }
-    cur_head = cur_head -> next;
-    mergetwo(cur_head,list1,list2);
+    struct ListNode* head = (struct ListNode*)malloc(sizeof *head);
+    head -> next = NULL;
+    struct ListNode* cur_head = head;
+    merge_tw0(cur_head,list1,list2);
+    print_list(head);
 
 
-    if (list1 == NULL || list2 == NULL){
-        if (list1) print_list(list1); else print_list(list2);
-        return NULL;
-    }
+    //if (list1 == NULL || list2 == NULL){
+    //    if (list1) print_list(list1); else print_list(list2);
+    //    return NULL;
+    //}
 }
 int main(){
     struct node* t1 = (struct node*)malloc(sizeof(struct node));
