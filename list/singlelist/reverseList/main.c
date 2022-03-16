@@ -196,23 +196,7 @@ void mergetwo(struct ListNode* head ,struct ListNode* list1,struct ListNode* lis
     mergetwo(head,up_ptr,down_ptr);
 
 }
-void merge_tw0(struct ListNode* head,struct ListNode* list1,struct ListNode* list2){
-    if(list1 == NULL){
-        head -> next = list2;
-        return;
-    }
-    if(list2 == NULL){
-        head -> next = list1;
-        return;
-    }
-    if(list1->val >= list2 ->val ){
-        head -> next = list2;
-        merge_tw0(head->next,list1,list2->next);
-    }else{
-        head -> next = list1;
-        merge_tw0(head->next,list1->next,list2);
-    }
-}
+
 void merge_two(struct ListNode* head,struct ListNode* list1,struct ListNode* list2){
     if(list1 == NULL){
         head -> next = list2;
@@ -244,7 +228,7 @@ struct ListNode* mergeTwoLists(struct ListNode* list1, struct ListNode* list2){
     struct ListNode* head = (struct ListNode*)malloc(sizeof *head);
     head -> next = NULL;
     struct ListNode* cur_head = head;
-    merge_tw0(cur_head,list1,list2);
+    //merge_tw0(cur_head,list1,list2);
     print_list(head);
 
 
@@ -253,18 +237,40 @@ struct ListNode* mergeTwoLists(struct ListNode* list1, struct ListNode* list2){
     //    return NULL;
     //}
 }
+struct ListNode* reverse(struct ListNode* cur_tail,struct ListNode* head_ptr){
+    if(cur_tail->next != NULL){
+        head_ptr = reverse(cur_tail->next,head_ptr);
+        //printf("cur val %d\n",cur_tail->val);
+        if(head_ptr->next != NULL ){
+            struct ListNode* ptr = head_ptr->next;
+            cur_tail ->next -> next = head_ptr->next; //尾部指向 head->next
+            head_ptr->next = cur_tail->next;//head ->next -> cur
+            head_ptr = ptr;
+            cur_tail ->next = NULL;    //尾部变空
+            printf("head ptr is %d\n",head_ptr->val);
+        }
+    }
+    return head_ptr;
+}
+
+void reorderList(struct ListNode* head){
+    struct ListNode* head_ptr = NULL;
+    //head_ptr -> next = head;
+    head_ptr = head;
+    reverse(head,head_ptr);
+}
 int main(){
     struct node* t1 = (struct node*)malloc(sizeof(struct node));
     t1->next = NULL;
     struct node* t2 = (struct node*)malloc(sizeof(struct node));
     t2->next = NULL;
-    int l1[] = {1,2,4};
+    int l1[] = {1,2,3,4};
     int l2[] = {1,3,4};
     make_list(t1,l1,sizeof(l1)/4);
-    make_list(t2,l2,sizeof(l1)/4);
+    //make_list(t2,l2,sizeof(l1)/4);
     //print_list(t1 -> next);
     //print_list(t2 -> next);
-    mergeTwoLists(t1->next,t2->next);
+    //mergeTwoLists(t1->next,t2->next);
     //Node* re_list = reverse_list(t);
     //print_list(re_list);
     //Node* n = recur_list(t);
@@ -272,5 +278,7 @@ int main(){
     //Node* n = reverse_list2(t);
     //Node* n = reverseKGroup(t->next,9);
     //print_list(n);
+    reorderList(t1->next);
+    print_list(t1->next);
 
 }
