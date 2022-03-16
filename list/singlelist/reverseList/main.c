@@ -232,30 +232,34 @@ struct ListNode* mergeTwoLists(struct ListNode* list1, struct ListNode* list2){
     print_list(head);
 
 
-    //if (list1 == NULL || list2 == NULL){
-    //    if (list1) print_list(list1); else print_list(list2);
-    //    return NULL;
-    //}
 }
+/*
+通过递归找到倒数第二个元素,记录下第一个head,并不断更新
+
+*/
+struct ListNode* reverse_com(struct ListNode* cur_tail,struct ListNode* head_ptr)
+{
+    if(cur_tail != NULL){
+        reverse_com(cur_tail->next,head_ptr);
+    }
+};
+
 struct ListNode* reverse(struct ListNode* cur_tail,struct ListNode* head_ptr){
     if(cur_tail->next != NULL){
         head_ptr = reverse(cur_tail->next,head_ptr);
-        //printf("cur val %d\n",cur_tail->val);
-        if(head_ptr->next != NULL ){
-            struct ListNode* ptr = head_ptr->next;
+        if(head_ptr->next != NULL && head_ptr != cur_tail){
             cur_tail ->next -> next = head_ptr->next; //尾部指向 head->next
             head_ptr->next = cur_tail->next;//head ->next -> cur
-            head_ptr = ptr;
+            head_ptr = cur_tail->next->next;//调整 head的位置
             cur_tail ->next = NULL;    //尾部变空
-            printf("head ptr is %d\n",head_ptr->val);
+            if(head_ptr->next == cur_tail) head_ptr = head_ptr->next;
         }
     }
     return head_ptr;
 }
-
+// 1 2 3
 void reorderList(struct ListNode* head){
     struct ListNode* head_ptr = NULL;
-    //head_ptr -> next = head;
     head_ptr = head;
     reverse(head,head_ptr);
 }
@@ -265,6 +269,9 @@ int main(){
     struct node* t2 = (struct node*)malloc(sizeof(struct node));
     t2->next = NULL;
     int l1[] = {1,2,3,4};
+    //1 2 3 4 5 
+    //1->5 2->3->4
+    //1->5->2->4
     int l2[] = {1,3,4};
     make_list(t1,l1,sizeof(l1)/4);
     //make_list(t2,l2,sizeof(l1)/4);
