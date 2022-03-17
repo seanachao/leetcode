@@ -263,12 +263,42 @@ void reorderList(struct ListNode* head){
     head_ptr = head;
     reverse(head,head_ptr);
 }
+void two_reverse(){}
+struct ListNode* swapPairs(struct ListNode* head){
+        if(head==NULL || head->next == NULL){
+            return head;
+        }
+        /*
+        head  head1   head2
+              tmp 
+        */
+       struct ListNode* tmp = head->next;
+       head->next = tmp->next;
+       tmp->next = head;
+       head->next = swapPairs(head->next);
+       return tmp;
+}
+struct ListNode* reverseList(struct ListNode* head){
+    if(head == NULL || head->next == NULL){
+        return head;
+    }
+    struct ListNode* tmp  = NULL;
+    tmp = reverseList(head->next);
+    head->next = head;
+    head->next = NULL;
+    return tmp;
+
+}
+struct ListNode* mer2list(struct ListNode* list1,struct ListNode* list2){
+
+
+}
 int main(){
     struct node* t1 = (struct node*)malloc(sizeof(struct node));
     t1->next = NULL;
     struct node* t2 = (struct node*)malloc(sizeof(struct node));
     t2->next = NULL;
-    int l1[] = {1,2,3,4};
+    int l1[] = {1,2,3,4,5};
     //1 2 3 4 5 
     //1->5 2->3->4
     //1->5->2->4
@@ -285,7 +315,8 @@ int main(){
     //Node* n = reverse_list2(t);
     //Node* n = reverseKGroup(t->next,9);
     //print_list(n);
-    reorderList(t1->next);
+    //reorderList(t1->next);
+    t1->next = swapPairs(t1->next);
     print_list(t1->next);
 
 }
