@@ -241,6 +241,9 @@ struct ListNode* reverse_com(struct ListNode* cur_tail,struct ListNode* head_ptr
 {
     if(cur_tail != NULL){
         reverse_com(cur_tail->next,head_ptr);
+
+        head_ptr->next = cur_tail;
+        //cur_tail = 
     }
 };
 
